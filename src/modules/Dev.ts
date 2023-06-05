@@ -1,18 +1,48 @@
 import {
   Extension,
   applicationCommand,
+  listener,
   option,
   ownerOnly,
 } from '@pikokr/command.ts'
+import { blue, green, yellow } from 'chalk'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   ChatInputCommandInteraction,
   codeBlock,
 } from 'discord.js'
+import type { Interaction } from 'discord.js'
 import { basename, join } from 'path'
 
 class Dev extends Extension {
+  @listener({ event: 'applicationCommandInvokeError', emitter: 'cts' })
+  async errorLogger(err: Error) {
+    this.logger.error(err)
+  }
+
+  @listener({ event: 'interactionCreate' })
+  async commandLogger(i: Interaction) {
+    if (!i.isChatInputCommand()) return
+
+    const options: string[] = []
+    for (const option of i.options.data) {
+      options.push(
+        `\n- ${green(option.name)}: ${blue(option.value)} (${yellow(
+          ApplicationCommandOptionType[option.type]
+        )})`
+      )
+    }
+
+    const guild = i.guild ? `${green(i.guild.name)}(${blue(i.guild.id)})` : 'DM'
+
+    this.logger.info(
+      `${green(i.user.tag)}(${blue(i.user.id)}) in ${guild}: ${yellow.bold(
+        `/${i.commandName}`
+      )}${options}`
+    )
+  }
+
   @ownerOnly
   @applicationCommand({
     type: ApplicationCommandType.ChatInput,
