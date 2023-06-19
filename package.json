@@ -33,5 +33,5 @@
     "jejudo": "^0.1.5",
     "tslog": "^4.8.2"
   },
-  "packageManager": "pnpm@8.6.0"
+  "packageManager": "pnpm@8.6.3"
 }
