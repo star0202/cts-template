@@ -7,6 +7,7 @@
     "build": "tsc",
     "dev": "ts-node --swc src",
     "start": "node dist",
+    "start:pm2": "tsc && pm2 start",
     "lint": "eslint src --ignore-path .gitignore"
   },
   "keywords": [],
