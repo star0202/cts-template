@@ -32,7 +32,8 @@
     "discord.js": "^14.11.0",
     "git-rev-sync": "^3.0.2",
     "jejudo": "^0.1.5",
-    "tslog": "^4.8.2"
+    "tslog": "^4.8.2",
+    "zod": "^3.21.4"
   },
   "packageManager": "pnpm@8.6.6"
 }

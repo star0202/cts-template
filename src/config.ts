@@ -1,8 +1,14 @@
-type Config = {
-  token: string
-  guilds?: string[]
-}
+import z from 'zod'
+
+const Config = z.object({
+  token: z.string().regex(/[A-Za-z\d]{23}\.[\w-]{6}\.[\w-]{27}/g),
+  guilds: z.array(z.string()).optional(),
+})
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-export const config: Config = require('../config.json')
-if (config.guilds?.length === 0) config.guilds = undefined
+const configRaw = require('../config.json')
+if (configRaw.guilds.length === 0) {
+  delete configRaw.guilds
+}
+
+export const config = Config.parse(configRaw)
