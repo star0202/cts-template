@@ -123,6 +123,20 @@ class Dev extends Extension {
 
     await i.editReply('Done')
   }
+
+  @ownerOnly
+  @applicationCommand({
+    type: ApplicationCommandType.ChatInput,
+    name: 'sync',
+    description: '[OWNER] Sync commands',
+  })
+  async sync(i: ChatInputCommandInteraction) {
+    await i.deferReply()
+
+    await this.commandClient.getApplicationCommandsExtension()?.sync()
+
+    await i.editReply('Done')
+  }
 }
 
 export const setup = async () => {
