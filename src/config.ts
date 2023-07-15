@@ -3,6 +3,7 @@ import z from 'zod'
 const Config = z.object({
   token: z.string().regex(/[A-Za-z\d]{23}\.[\w-]{6}\.[\w-]{27}/g),
   guilds: z.array(z.string()).optional(),
+  debug: z.boolean(),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
