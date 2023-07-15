@@ -1,9 +1,10 @@
 import { Logger } from 'tslog'
 
-export const logger = new Logger({
-  name: 'Bot',
-  prettyLogTemplate:
-    '{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t[{{name}}]\t',
-  prettyLogTimeZone: 'local',
-  minLevel: 3,
-})
+export const getLogger = (name: string, level?: number) =>
+  new Logger({
+    name: name,
+    prettyLogTemplate:
+      '{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t[{{name}}]\t',
+    prettyLogTimeZone: 'local',
+    minLevel: level || 3,
+  })

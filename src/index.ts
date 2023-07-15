@@ -1,12 +1,13 @@
 import { config } from './config'
-import { CustomClient } from './structures'
+import Client from './structures/Client'
+import { getLogger } from './utils'
 
-const cts = new CustomClient()
+const client = new Client(getLogger('Client'))
 
 ;(async () => {
-  await cts.setup()
+  await client.setup()
 
-  await cts.discord.login(config.token)
+  await client.discord.login(config.token)
 
-  await cts.getApplicationCommandsExtension()?.sync()
+  await client.getApplicationCommandsExtension()?.sync()
 })()

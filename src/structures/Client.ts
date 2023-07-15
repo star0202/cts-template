@@ -1,17 +1,17 @@
 import { config } from '../config'
 import { VERSION } from '../constants'
-import { logger } from '../utils'
 import { CommandClient } from '@pikokr/command.ts'
 import { green } from 'chalk'
 import { ActivityType, Client } from 'discord.js'
 import { short } from 'git-rev-sync'
 import { Jejudo } from 'jejudo'
 import { join } from 'path'
+import { Logger } from 'tslog'
 
-export class CustomClient extends CommandClient {
+export default class CustomClient extends CommandClient {
   private jejudo: Jejudo | null = null
 
-  constructor() {
+  constructor(logger: Logger<unknown>) {
     super(
       new Client({
         intents: ['GuildMessages', 'Guilds', 'MessageContent'],
