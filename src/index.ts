@@ -4,10 +4,4 @@ import { getLogger } from './utils'
 
 const client = new Client(getLogger('Client', config.debug ? 2 : 3))
 
-;(async () => {
-  await client.setup()
-
-  await client.discord.login(config.token)
-
-  await client.getApplicationCommandsExtension()?.sync()
-})()
+;(async () => await client.start())()

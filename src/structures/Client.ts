@@ -60,4 +60,12 @@ export default class CustomClient extends CommandClient {
 
     await this.fetchOwners()
   }
+
+  async start() {
+    await this.setup()
+
+    await this.discord.login(config.token)
+
+    await this.getApplicationCommandsExtension()?.sync()
+  }
 }
