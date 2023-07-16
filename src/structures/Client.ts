@@ -19,7 +19,7 @@ export default class CustomClient extends CommandClient {
       logger
     )
 
-    this.discord.on('ready', () => this.onReady())
+    this.discord.once('ready', (client) => this.onReady(client))
 
     this.discord.on('debug', (msg) => {
       this.logger.debug(msg)
@@ -34,21 +34,20 @@ export default class CustomClient extends CommandClient {
     )
   }
 
-  async onReady() {
-    this.jejudo = new Jejudo(this.discord, {
+  async onReady(client: Client<true>) {
+    this.jejudo = new Jejudo(client, {
       isOwner: (user) => this.owners.has(user.id),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      prefix: `<@!${this.discord.user!.id}>`,
+      prefix: `<@!${client.user.id}>`,
       noPermission: (i) => i.reply('Permission denied'),
     })
 
-    this.discord.on('messageCreate', (msg) => this.jejudo?.handleMessage(msg))
+    client.on('messageCreate', (msg) => this.jejudo?.handleMessage(msg))
 
-    this.discord.on('interactionCreate', (i) => {
+    client.on('interactionCreate', (i) => {
       this.jejudo?.handleInteraction(i)
     })
 
-    this.discord.user?.setPresence({
+    client.user.setPresence({
       activities: [
         {
           name: `${VERSION} (${short()})`,
@@ -57,7 +56,7 @@ export default class CustomClient extends CommandClient {
       ],
     })
 
-    this.logger.info(`Logged in as: ${green(this.discord.user?.tag)}`)
+    this.logger.info(`Logged in as: ${green(client.user.tag)}`)
 
     await this.fetchOwners()
   }
