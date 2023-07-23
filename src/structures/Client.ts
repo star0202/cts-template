@@ -37,7 +37,7 @@ export default class CustomClient extends CommandClient {
   async onReady(client: Client<true>) {
     this.jejudo = new Jejudo(client, {
       isOwner: (user) => this.owners.has(user.id),
-      prefix: `<@${client.user.id}>`,
+      prefix: `<@${client.user.id}> `,
       noPermission: (i) => i.reply('Permission denied'),
     })
 
