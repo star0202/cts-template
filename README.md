@@ -12,9 +12,9 @@ pnpm i
 pnpm dev
 ```
 ```sh
-pnpm build
-
 pnpm start
 # or
+pnpm build
+
 pm2 start
 ```
