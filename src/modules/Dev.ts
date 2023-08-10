@@ -1,5 +1,5 @@
+import CustomExt from '../structures/Extension'
 import {
-  Extension,
   applicationCommand,
   listener,
   option,
@@ -15,7 +15,7 @@ import {
 import type { Interaction } from 'discord.js'
 import { basename, join } from 'path'
 
-class Dev extends Extension {
+class Dev extends CustomExt {
   @listener({ event: 'applicationCommandInvokeError', emitter: 'cts' })
   async errorLogger(err: Error) {
     try {
