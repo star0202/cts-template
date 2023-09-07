@@ -12,8 +12,13 @@ import {
   ChatInputCommandInteraction,
   codeBlock,
 } from 'discord.js'
-import type { Interaction } from 'discord.js'
+import type { CommandInteractionOption, Interaction } from 'discord.js'
 import { basename, join } from 'path'
+
+const commandLog = (data: CommandInteractionOption, indents = 0) =>
+  `\n${' '.repeat(indents * 2)}- ${green(data.name)}: ${blue(
+    data.value
+  )} (${yellow(ApplicationCommandOptionType[data.type])})`
 
 class Dev extends CustomExt {
   @listener({ event: 'applicationCommandInvokeError', emitter: 'cts' })
@@ -30,22 +35,20 @@ class Dev extends CustomExt {
   async commandLogger(i: Interaction) {
     if (!i.isChatInputCommand()) return
 
-    const options: string[] = []
-    for (const option of i.options.data) {
-      options.push(
-        `\n- ${green(option.name)}: ${blue(option.value)} (${yellow(
-          ApplicationCommandOptionType[option.type]
-        )})`
-      )
-    }
+    const options = i.options.data.map((data) =>
+      data.type !== ApplicationCommandOptionType.Subcommand
+        ? commandLog(data)
+        : `\n- ${green(data.name)}: (${yellow('Subcommand')})` +
+          data.options?.map((x) => commandLog(x, 1))
+    )
 
     const guild = i.guild ? `${green(i.guild.name)}(${blue(i.guild.id)})` : 'DM'
 
-    this.logger.info(
-      `${green(i.user.tag)}(${blue(i.user.id)}) in ${guild}: ${yellow.bold(
-        `/${i.commandName}`
-      )}${options}`
-    )
+    const msg = `${green(i.user.tag)}(${blue(
+      i.user.id
+    )}) in ${guild}: ${yellow.bold(`/${i.commandName}`)}${options}`
+
+    this.logger.info(msg)
   }
 
   @ownerOnly
