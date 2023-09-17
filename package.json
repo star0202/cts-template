@@ -33,5 +33,5 @@
     "tslog": "^4.9.2",
     "zod": "^3.22.2"
   },
-  "packageManager": "pnpm@8.7.4"
+  "packageManager": "pnpm@8.7.5"
 }
