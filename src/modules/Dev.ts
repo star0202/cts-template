@@ -1,4 +1,5 @@
 import CustomExt from '../structures/Extension'
+import { toString } from '../utils/object'
 import {
   applicationCommand,
   listener,
@@ -12,7 +13,7 @@ import {
   ChatInputCommandInteraction,
   codeBlock,
 } from 'discord.js'
-import type { CommandInteractionOption, Interaction } from 'discord.js'
+import type { CommandInteractionOption, Interaction, Message } from 'discord.js'
 import { basename, join } from 'path'
 
 const commandLog = (data: CommandInteractionOption, indents = 0) =>
@@ -144,6 +145,31 @@ class Dev extends CustomExt {
     await this.commandClient.getApplicationCommandsExtension()?.sync()
 
     await i.editReply('Done')
+  }
+
+  @listener({ event: 'messageCreate' })
+  async eval(msg: Message) {
+    if (!this.commandClient.owners.has(msg.author.id)) return
+
+    if (!msg.content.startsWith(`<@${this.client.user?.id}> eval`)) return
+
+    const code = msg.content
+      .split(' ')
+      .slice(2)
+      .join(' ')
+      .replace(/```(js|ts)?/g, '')
+      .trim()
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const cts = this.commandClient
+
+      const res = await eval(code)
+      const lines = typeof res === 'string' ? res : toString(res)
+      await msg.reply(codeBlock('ts', lines))
+    } catch (e) {
+      await msg.reply(`Error\n${codeBlock('js', `${e}`)}`)
+    }
   }
 }
 
