@@ -2,8 +2,8 @@ import { config } from '../config'
 import { VERSION } from '../constants'
 import { CommandClient } from '@pikokr/command.ts'
 import { green } from 'chalk'
-import { exec } from 'child_process'
 import { ActivityType, Client } from 'discord.js'
+import { short } from 'git-rev-sync'
 import { Jejudo } from 'jejudo'
 import { join } from 'path'
 import { Logger } from 'tslog'
@@ -50,9 +50,7 @@ export default class CustomClient extends CommandClient {
     client.user.setPresence({
       activities: [
         {
-          name: `${VERSION} (${
-            exec('git rev-parse --short HEAD').stdout ?? 'N/A'
-          })`,
+          name: `${VERSION} (${short() ?? 'N/A'})`,
           type: ActivityType.Playing,
         },
       ],
