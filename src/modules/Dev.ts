@@ -13,7 +13,12 @@ import {
   ChatInputCommandInteraction,
   codeBlock,
 } from 'discord.js'
-import type { CommandInteractionOption, Interaction, Message } from 'discord.js'
+import type {
+  CommandInteractionOption,
+  GuildBasedChannel,
+  Interaction,
+  Message,
+} from 'discord.js'
 import { basename, join } from 'path'
 
 const commandLog = (data: CommandInteractionOption, indents = 0) =>
@@ -43,7 +48,11 @@ class Dev extends CustomExt {
           data.options?.map((x) => commandLog(x, 1))
     )
 
-    const guild = i.guild ? `${green(i.guild.name)}(${blue(i.guild.id)})` : 'DM'
+    const guild = i.guild
+      ? `#${green((i.channel as GuildBasedChannel).name)}(${blue(
+          i.channelId
+        )}${green(i.guild.name)}(${blue(i.guild.id)})`
+      : 'DM'
 
     const msg = `${green(i.user.tag)}(${blue(
       i.user.id
