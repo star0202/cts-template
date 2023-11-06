@@ -49,7 +49,7 @@ class Dev extends CustomExt {
     )
 
     const guild = i.guild
-      ? `#${green((i.channel as GuildBasedChannel).name)}(${blue(
+      ? `${green(`#${(i.channel as GuildBasedChannel).name}`)}(${blue(
           i.channelId
         )} at ${green(i.guild.name)}(${blue(i.guild.id)})`
       : 'DM'
