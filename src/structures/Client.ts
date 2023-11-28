@@ -9,7 +9,7 @@ import { join } from 'path'
 import { Logger } from 'tslog'
 
 export default class CustomClient extends CommandClient {
-  private jejudo: Jejudo | null = null
+  private jejudo!: Jejudo
 
   constructor(logger: Logger<unknown>) {
     super(
@@ -41,10 +41,10 @@ export default class CustomClient extends CommandClient {
       noPermission: (i) => i.reply('Permission denied'),
     })
 
-    client.on('messageCreate', (msg) => this.jejudo?.handleMessage(msg))
+    client.on('messageCreate', (msg) => this.jejudo.handleMessage(msg))
 
     client.on('interactionCreate', (i) => {
-      this.jejudo?.handleInteraction(i)
+      this.jejudo.handleInteraction(i)
     })
 
     client.user.setPresence({
