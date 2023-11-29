@@ -4,7 +4,7 @@ import { EmbedBuilder, GuildMember, codeBlock } from 'discord.js'
 import type { EmbedField, User } from 'discord.js'
 
 const chunk = (content: string, limit = 1024 - 10) => {
-  const chunked = new Array<string>()
+  const chunked = []
   let cur = 0
   let end = limit
 
