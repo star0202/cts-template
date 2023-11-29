@@ -18,9 +18,7 @@ const chunk = (content: string, limit = 1024 - 10) => {
     }
 
     const lastNewline = content.lastIndexOf('\n', end)
-    if (lastNewline !== -1 && lastNewline > cur) {
-      end = lastNewline
-    }
+    if (lastNewline !== -1 && lastNewline > cur) end = lastNewline
 
     chunked.push(content.slice(cur, end))
 
