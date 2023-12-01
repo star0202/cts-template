@@ -1,7 +1,12 @@
 import { toString } from '../utils/object'
 import { toTimestamp } from '../utils/time'
-import { EmbedBuilder, GuildMember, codeBlock } from 'discord.js'
-import type { EmbedField, User } from 'discord.js'
+import {
+  EmbedBuilder,
+  GuildMember,
+  codeBlock,
+  normalizeArray,
+} from 'discord.js'
+import type { APIEmbedField, RestOrArray, User } from 'discord.js'
 
 const chunk = (content: string, limit = 1024 - 10) => {
   const chunked = []
@@ -47,13 +52,15 @@ export default class CustomEmbed extends EmbedBuilder {
   }
 
   addChunkedFields(
-    ...fields: (Omit<EmbedField, 'value'> & {
-      value: string | object
-      lang: string
-      ignore?: string[]
-    })[]
+    ...fields: RestOrArray<
+      Omit<APIEmbedField, 'value'> & {
+        value: string | object
+        lang?: string
+        ignore?: string[]
+      }
+    >
   ) {
-    fields.forEach((field) => {
+    normalizeArray(fields).forEach((field) => {
       const { lang, ignore, name, value, inline } = field
 
       const chunked = chunk(
@@ -63,7 +70,7 @@ export default class CustomEmbed extends EmbedBuilder {
       chunked.forEach((v, idx) =>
         this.addFields({
           name: `${name} ${idx + 1}/${chunked.length}`,
-          value: codeBlock(lang, v),
+          value: codeBlock(lang ?? 'ts', v),
           inline,
         })
       )
