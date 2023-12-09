@@ -51,12 +51,12 @@ export default class CustomEmbed extends EmbedBuilder {
     })
   }
 
-  addChunkedFields(
+  addChunkedFields<T>(
     ...fields: RestOrArray<
       Omit<APIEmbedField, 'value'> & {
-        value: string | object
+        value: string | T
         lang?: string
-        ignore?: string[]
+        ignore?: (keyof T)[]
       }
     >
   ) {
