@@ -19,7 +19,7 @@ dependencies:
     version: 3.0.2
   jejudo:
     specifier: ^0.1.5
-    version: 0.1.5(@swc/core@1.3.83)(discord.js@14.13.0)(ts-node@10.9.1)
+    version: 0.1.5(@swc/core@1.3.83)(discord.js@14.13.0)(ts-node@10.9.2)
   tslog:
     specifier: ^4.9.2
     version: 4.9.2
@@ -62,8 +62,8 @@ devDependencies:
     specifier: ^5.0.1
     version: 5.0.1
   ts-node:
-    specifier: ^10.9.1
-    version: 10.9.1(@swc/core@1.3.83)(@types/node@20.5.9)(typescript@5.2.2)
+    specifier: ^10.9.2
+    version: 10.9.2(@swc/core@1.3.83)(@types/node@20.5.9)(typescript@5.2.2)
   typescript:
     specifier: ^5.2.2
     version: 5.2.2
@@ -1786,7 +1786,7 @@ packages:
     resolution: {integrity: sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==}
     dev: true
 
-  /jejudo@0.1.5(@swc/core@1.3.83)(discord.js@14.13.0)(ts-node@10.9.1):
+  /jejudo@0.1.5(@swc/core@1.3.83)(discord.js@14.13.0)(ts-node@10.9.2):
     resolution: {integrity: sha512-BVteqYLCMergKZ7c+qOMbjcCFiUYVHERtbPLbrqqNNM7yvtEMwSggDhfEJEKpZbg6WXccfKCSLUzOTxsocVo4A==}
     peerDependencies:
       discord.js: ^14.1.2
@@ -1799,7 +1799,7 @@ packages:
       eslint: 8.48.0
       lodash: 4.17.21
       node-pty: 0.10.1
-      tsup: 5.12.9(@swc/core@1.3.83)(ts-node@10.9.1)(typescript@4.7.4)
+      tsup: 5.12.9(@swc/core@1.3.83)(ts-node@10.9.2)(typescript@4.7.4)
       typescript: 4.7.4
       xterm-headless: 4.19.0
       yargs: 17.7.2
@@ -2086,7 +2086,7 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
-  /postcss-load-config@3.1.4(ts-node@10.9.1):
+  /postcss-load-config@3.1.4(ts-node@10.9.2):
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
     peerDependencies:
@@ -2099,7 +2099,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.1.0
-      ts-node: 10.9.1(@swc/core@1.3.83)(@types/node@20.5.9)(typescript@5.2.2)
+      ts-node: 10.9.2(@swc/core@1.3.83)(@types/node@20.5.9)(typescript@5.2.2)
       yaml: 1.10.2
     dev: false
 
@@ -2386,8 +2386,8 @@ packages:
     resolution: {integrity: sha512-k43M7uCG1AkTyxgnmI5MPwKoUvS/bRvLvUb7+Pgpdlmok8AoqmUaZxUUw8zKM5B1lqZrt41GjYgnvAi0fppqgQ==}
     dev: false
 
-  /ts-node@10.9.1(@swc/core@1.3.83)(@types/node@20.5.9)(typescript@5.2.2):
-    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
+  /ts-node@10.9.2(@swc/core@1.3.83)(@types/node@20.5.9)(typescript@5.2.2):
+    resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
     hasBin: true
     peerDependencies:
       '@swc/core': '>=1.2.50'
@@ -2430,7 +2430,7 @@ packages:
     engines: {node: '>=16'}
     dev: false
 
-  /tsup@5.12.9(@swc/core@1.3.83)(ts-node@10.9.1)(typescript@4.7.4):
+  /tsup@5.12.9(@swc/core@1.3.83)(ts-node@10.9.2)(typescript@4.7.4):
     resolution: {integrity: sha512-dUpuouWZYe40lLufo64qEhDpIDsWhRbr2expv5dHEMjwqeKJS2aXA/FPqs1dxO4T6mBojo7rvo3jP9NNzaKyDg==}
     hasBin: true
     peerDependencies:
@@ -2454,7 +2454,7 @@ packages:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      postcss-load-config: 3.1.4(ts-node@10.9.1)
+      postcss-load-config: 3.1.4(ts-node@10.9.2)
       resolve-from: 5.0.0
       rollup: 2.79.1
       source-map: 0.8.0-beta.0
