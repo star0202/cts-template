@@ -79,6 +79,7 @@ export default class CustomEmbed extends EmbedBuilder {
           : (name) => name)
       const _valueF = valueF ?? ((x) => codeBlock('ts', x))
 
+      // TODO: calculate actual size of embed (or use embed paginator)
       if (chunked.length > 5) {
         chunked[4] += `\n... and ${chunked
           .slice(5)
