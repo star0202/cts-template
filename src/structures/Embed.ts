@@ -1,4 +1,4 @@
-import { toString } from '../utils/object'
+import { Colors } from '../constants'
 import { toTimestamp } from '../utils/time'
 import {
   EmbedBuilder,
@@ -6,7 +6,13 @@ import {
   codeBlock,
   normalizeArray,
 } from 'discord.js'
-import type { APIEmbedField, RestOrArray, User } from 'discord.js'
+import type {
+  APIEmbed,
+  APIEmbedField,
+  EmbedData,
+  RestOrArray,
+  User,
+} from 'discord.js'
 
 const chunk = (content: string, limit = 1024 - 10) => {
   const chunked = []
@@ -34,11 +40,14 @@ const chunk = (content: string, limit = 1024 - 10) => {
 }
 
 export default class CustomEmbed extends EmbedBuilder {
+  constructor(data?: EmbedData | APIEmbed) {
+    super({ color: Colors.Default, ...data })
+  }
+
   setUNIXTimestamp(timestamp = Date.now()) {
-    this.setFooter({
+    return this.setFooter({
       text: toTimestamp(timestamp),
-    })
-    return this.setTimestamp(timestamp)
+    }).setTimestamp(timestamp)
   }
 
   setDetailedAuthor(userOrMember: User | GuildMember) {
@@ -51,26 +60,37 @@ export default class CustomEmbed extends EmbedBuilder {
     })
   }
 
-  addChunkedFields<T>(
+  addChunkedFields(
     ...fields: RestOrArray<
-      Omit<APIEmbedField, 'value'> & {
-        value: string | T
-        lang?: string
-        ignore?: (keyof T)[]
+      APIEmbedField & {
+        nameF?: (title: string, idx: number, total: number) => string
+        valueF?: (value: string) => string
       }
     >
   ) {
     normalizeArray(fields).forEach((field) => {
-      const { lang, ignore, name, value, inline } = field
+      const { name, value, inline, nameF, valueF } = field
+      let chunked = chunk(value)
+      const originalLength = chunked.length
+      const _nameF =
+        nameF ??
+        (chunked.length > 1
+          ? (name, idx, total) => `${name} ${idx + 1}/${total}`
+          : (name) => name)
+      const _valueF = valueF ?? ((x) => codeBlock('ts', x))
 
-      const chunked = chunk(
-        typeof value === 'string' ? value : toString(value, ignore)
-      )
+      if (chunked.length > 5) {
+        chunked[4] += `\n... and ${chunked
+          .slice(5)
+          .reduce((acc, cur) => acc + cur.split('\n').length, 0)} more lines`
+
+        chunked = chunked.slice(0, 5)
+      }
 
       chunked.forEach((v, idx) =>
         this.addFields({
-          name: `${name} ${idx + 1}/${chunked.length}`,
-          value: codeBlock(lang ?? 'ts', v),
+          name: _nameF(name, idx, originalLength),
+          value: _valueF(v),
           inline,
         })
       )
