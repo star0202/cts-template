@@ -88,12 +88,12 @@ export default class CustomEmbed extends EmbedBuilder {
         chunked = chunked.slice(0, 5)
       }
 
-      chunked.forEach((v, idx) =>
-        this.addFields({
+      this.addFields(
+        chunked.map((v, idx) => ({
           name: _nameF(name, idx, originalLength),
           value: _valueF(v),
           inline,
-        })
+        }))
       )
     })
 
