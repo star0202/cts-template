@@ -1,6 +1,7 @@
 import CustomExt from '../structures/Extension'
 import { toString } from '../utils/object'
 import {
+  Extension,
   applicationCommand,
   listener,
   option,
@@ -26,7 +27,7 @@ const commandLog = (data: CommandInteractionOption, indents = 0) =>
     data.value
   )} (${yellow(ApplicationCommandOptionType[data.type])})`
 
-class Dev extends CustomExt {
+class Dev extends Extension<CustomClient> {
   @listener({ event: 'applicationCommandInvokeError', emitter: 'cts' })
   async errorLogger(err: Error) {
     try {
