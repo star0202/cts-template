@@ -22,3 +22,8 @@ const client = new CustomClient({
 })
 
 client.start()
+
+process
+  .on('unhandledRejection', (err) => logger.error(err))
+  .on('uncaughtException', (err) => logger.error(err))
+  .on('warning', (err) => logger.warn(err))
