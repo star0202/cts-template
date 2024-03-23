@@ -1,13 +1,10 @@
+import { ownerOnly } from '../checks/owner'
 import { Emojis } from '../constants'
+import * as $ from '../embeds/Dev'
 import CustomClient from '../structures/Client'
-import CustomEmbed from '../structures/Embed'
+import KnownError from '../structures/Error'
 import { toString } from '../utils/object'
-import {
-  Extension,
-  applicationCommand,
-  listener,
-  ownerOnly,
-} from '@pikokr/command.ts'
+import { Extension, applicationCommand, listener } from '@pikokr/command.ts'
 import { blue, green, yellow } from 'chalk'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import {
@@ -21,7 +18,6 @@ import type {
   Interaction,
   Message,
 } from 'discord.js'
-import { basename } from 'path'
 
 const commandLog = (data: CommandInteractionOption, indents = 0) =>
   `\n${' '.repeat(indents * 2)}- ${green(data.name)}: ${blue(
@@ -31,6 +27,8 @@ const commandLog = (data: CommandInteractionOption, indents = 0) =>
 class Dev extends Extension<CustomClient> {
   @listener({ event: 'applicationCommandInvokeError', emitter: 'cts' })
   async errorLogger(err: Error) {
+    if (err instanceof KnownError) return this.logger.warn(err.message)
+
     this.logger.error(err.stack)
   }
 
@@ -70,28 +68,9 @@ class Dev extends Extension<CustomClient> {
     })
 
     const modules = await this.commandClient.registry.reloadModules()
-    const success = modules.filter((x) => x.result),
-      fail = modules.filter((x) => !x.result)
-
-    const { Success, Fail } = Emojis
 
     i.editReply({
-      embeds: [
-        new CustomEmbed()
-          .setTitle('Every module reloaded')
-          .setDescription(`${Success} ${success.length} ${Fail} ${fail.length}`)
-          .addFields(
-            {
-              name: 'Success',
-              value:
-                success.map((x) => basename(x.file)).join('\n') || '*None*',
-            },
-            {
-              name: 'Fail',
-              value: fail.map((x) => basename(x.file)).join('\n') || '*None*',
-            }
-          ),
-      ],
+      embeds: [$.Reload.result(modules)],
     })
   }
 
@@ -109,11 +88,7 @@ class Dev extends Extension<CustomClient> {
     await this.commandClient.getApplicationCommandsExtension()?.sync()
 
     i.editReply({
-      embeds: [
-        new CustomEmbed()
-          .setTitle('Commands synced')
-          .setDescription(`${Emojis.Success} Done`),
-      ],
+      embeds: [$.Sync.success()],
     })
   }
 
@@ -145,21 +120,8 @@ class Dev extends Extension<CustomClient> {
       if (!(e instanceof Error)) throw e
 
       msg.reply({
-        embeds: [
-          new CustomEmbed()
-            .setTitle('Error occurred')
-            .setColor('Red')
-            .addChunkedFields(
-              {
-                name: 'Input',
-                value: code,
-              },
-              {
-                name: 'Stack trace',
-                value: e.stack ?? 'N/A',
-              }
-            ),
-        ],
+        embeds: [$.Eval.error(code, e)],
+        allowedMentions: { repliedUser: false },
       })
 
       return
@@ -168,21 +130,7 @@ class Dev extends Extension<CustomClient> {
     await msg.react(Emojis.Success)
     const output = typeof res === 'string' ? res : toString(res)
     msg.reply({
-      embeds: [
-        new CustomEmbed()
-          .setTitle('Successfully executed')
-          .setColor('Green')
-          .addChunkedFields(
-            {
-              name: 'Input',
-              value: code,
-            },
-            {
-              name: 'Output',
-              value: output,
-            }
-          ),
-      ],
+      embeds: [$.Eval.success(code, output)],
       allowedMentions: { repliedUser: false },
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
