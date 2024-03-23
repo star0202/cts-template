@@ -5,13 +5,10 @@ import { green } from 'chalk'
 import { ActivityType, Client } from 'discord.js'
 import type { GatewayIntentBits } from 'discord.js'
 import { short } from 'git-rev-sync'
-import { Jejudo } from 'jejudo'
 import { join } from 'path'
 import { Logger } from 'tslog'
 
 export default class CustomClient extends CommandClient {
-  private jejudo!: Jejudo
-
   constructor(config: {
     logger: Logger<unknown>
     intents: GatewayIntentBits[]
@@ -41,18 +38,6 @@ export default class CustomClient extends CommandClient {
   }
 
   async onReady(client: Client<true>) {
-    this.jejudo = new Jejudo(client, {
-      isOwner: (user) => this.owners.has(user.id),
-      prefix: `<@${client.user.id}> `,
-      noPermission: (i) => i.reply('Permission denied'),
-    })
-
-    client.on('messageCreate', (msg) => this.jejudo.handleMessage(msg))
-
-    client.on('interactionCreate', (i) => {
-      this.jejudo.handleInteraction(i)
-    })
-
     client.user.setPresence({
       activities: [
         {
