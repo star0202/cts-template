@@ -1,6 +1,6 @@
 import { ownerOnly } from '../checks/owner'
 import { Emojis } from '../constants'
-import * as $ from '../embeds/Dev'
+import { Eval, Reload, Sync } from '../embeds/Dev'
 import CustomClient from '../structures/Client'
 import KnownError from '../structures/Error'
 import { toString } from '../utils/object'
@@ -70,7 +70,7 @@ class Dev extends Extension<CustomClient> {
     const modules = await this.commandClient.registry.reloadModules()
 
     i.editReply({
-      embeds: [$.Reload.result(modules)],
+      embeds: [Reload.result(modules)],
     })
   }
 
@@ -88,7 +88,7 @@ class Dev extends Extension<CustomClient> {
     await this.commandClient.getApplicationCommandsExtension()?.sync()
 
     i.editReply({
-      embeds: [$.Sync.success()],
+      embeds: [Sync.success()],
     })
   }
 
@@ -120,7 +120,7 @@ class Dev extends Extension<CustomClient> {
       if (!(e instanceof Error)) throw e
 
       msg.reply({
-        embeds: [$.Eval.error(code, e)],
+        embeds: [Eval.error(code, e)],
         allowedMentions: { repliedUser: false },
       })
 
@@ -130,7 +130,7 @@ class Dev extends Extension<CustomClient> {
     await msg.react(Emojis.Success)
     const output = typeof res === 'string' ? res : toString(res)
     msg.reply({
-      embeds: [$.Eval.success(code, output)],
+      embeds: [Eval.success(code, output)],
       allowedMentions: { repliedUser: false },
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
