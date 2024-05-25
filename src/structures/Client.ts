@@ -5,7 +5,7 @@ import { green } from 'chalk'
 import { ActivityType, Client } from 'discord.js'
 import type { GatewayIntentBits } from 'discord.js'
 import { short } from 'git-rev-sync'
-import { join } from 'path'
+import { join } from 'node:path'
 import { Logger } from 'tslog'
 
 export default class CustomClient extends CommandClient {

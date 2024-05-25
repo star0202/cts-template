@@ -1,6 +1,6 @@
 import { Emojis } from '../constants'
 import CustomEmbed from '../structures/Embed'
-import { basename } from 'path'
+import { basename } from 'node:path'
 
 export class Eval {
   private static default = (code: string) =>

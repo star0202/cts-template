@@ -1,4 +1,4 @@
-import { inspect } from 'util'
+import { inspect } from 'node:util'
 
 export const toString = <T>(obj: T, ignore?: (keyof T)[]): string => {
   let cur = obj
