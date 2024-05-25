@@ -24,9 +24,7 @@ export default class CustomClient extends CommandClient {
 
     this.discord.once(Events.ClientReady, (client) => this.onReady(client))
 
-    this.discord.on(Events.Debug, (msg) => {
-      this.logger.debug(msg)
-    })
+    this.discord.on(Events.Debug, (msg) => this.logger.debug(msg))
   }
 
   async setup() {
