@@ -1,7 +1,7 @@
 import { ownerOnly } from '../checks/owner'
 import { Emojis } from '../constants'
 import { Eval, Reload, Sync } from '../embeds/Dev'
-import CustomClient from '../structures/Client'
+import type CustomClient from '../structures/Client'
 import KnownError from '../structures/Error'
 import { toString } from '../utils/object'
 import { Extension, applicationCommand, listener } from '@pikokr/command.ts'
