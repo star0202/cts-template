@@ -1,10 +1,6 @@
 name: CI
 
-on:
-  pull_request:
-    branches: [master]
-  push:
-    branches: [master]
+on: [push, pull_request]
 
 jobs:
   lint:
@@ -13,10 +9,10 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
-      - name: Setup node.js 18
+      - name: Setup node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'pnpm'
       - name: Enable Corepack
         run: corepack enable
