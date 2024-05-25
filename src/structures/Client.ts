@@ -2,7 +2,7 @@ import { config } from '../config'
 import { VERSION } from '../constants'
 import { CommandClient } from '@pikokr/command.ts'
 import { green } from 'chalk'
-import { ActivityType, Client } from 'discord.js'
+import { ActivityType, Client, Events } from 'discord.js'
 import type { GatewayIntentBits } from 'discord.js'
 import { short } from 'git-rev-sync'
 import { join } from 'node:path'
@@ -22,9 +22,9 @@ export default class CustomClient extends CommandClient {
       logger
     )
 
-    this.discord.once('ready', (client) => this.onReady(client))
+    this.discord.once(Events.ClientReady, (client) => this.onReady(client))
 
-    this.discord.on('debug', (msg) => {
+    this.discord.on(Events.Debug, (msg) => {
       this.logger.debug(msg)
     })
   }
