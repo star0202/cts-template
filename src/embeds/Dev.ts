@@ -1,5 +1,7 @@
 import { Emojis } from '../constants'
+import type { NoticeResult } from '../modules/Dev'
 import CustomEmbed from '../structures/Embed'
+import { codeBlock } from 'discord.js'
 import { basename } from 'node:path'
 
 export class Eval {
@@ -7,6 +9,7 @@ export class Eval {
     new CustomEmbed().addChunkedFields({
       name: 'Input',
       value: code,
+      valueF: (x) => codeBlock('ts', x),
     })
 
   static success = (code: string, output: string) =>
@@ -16,6 +19,7 @@ export class Eval {
       .addChunkedFields({
         name: 'Output',
         value: output,
+        valueF: (x) => codeBlock('ts', x),
       })
 
   static error = (code: string, e: Error) =>
@@ -25,6 +29,7 @@ export class Eval {
       .addChunkedFields({
         name: 'Stack trace',
         value: e.stack ?? 'N/A',
+        valueF: (x) => codeBlock('ts', x),
       })
 }
 
@@ -63,4 +68,47 @@ export class Sync {
     new CustomEmbed()
       .setTitle('Commands synced')
       .setDescription(`${Emojis.Success} Done`)
+}
+
+export class Notice {
+  static invalidURL = () =>
+    new CustomEmbed()
+      .setTitle('Invalid URL')
+      .setColor('Red')
+      .setDescription('Invalid discohook URL')
+
+  static tooMany = () =>
+    new CustomEmbed()
+      .setTitle('Too many messages')
+      .setColor('Red')
+      .setDescription('You can only send 1 message at a time')
+
+  static result = (success: NoticeResult[], fail: NoticeResult[]) =>
+    new CustomEmbed()
+      .setTitle('Notice result')
+      .setDescription(
+        `${Emojis.Success} ${success.length} ${Emojis.Fail} ${fail.length}`
+      )
+      .addChunkedFields(
+        {
+          name: 'Success',
+          value:
+            success
+              .map(
+                (x) =>
+                  `**${x.owner.user.tag}**(${x.owner.id}) of **${x.guild.name}**(${x.guild.id})`
+              )
+              .join('\n') || '*None*',
+        },
+        {
+          name: 'Fail',
+          value:
+            fail
+              .map(
+                (x) =>
+                  `**${x.owner.user.tag}**(${x.owner.id}) of **${x.guild.name}**(${x.guild.id})`
+              )
+              .join('\n') || '*None*',
+        }
+      )
 }

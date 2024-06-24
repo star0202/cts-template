@@ -1,11 +1,6 @@
 import { Colors } from '../constants'
 import { toTimestamp } from '../utils/time'
-import {
-  EmbedBuilder,
-  GuildMember,
-  codeBlock,
-  normalizeArray,
-} from 'discord.js'
+import { EmbedBuilder, GuildMember, normalizeArray } from 'discord.js'
 import type {
   APIEmbed,
   APIEmbedField,
@@ -77,7 +72,7 @@ export default class CustomEmbed extends EmbedBuilder {
         (chunked.length > 1
           ? (name, idx, total) => `${name} ${idx + 1}/${total}`
           : (name) => name)
-      const _valueF = valueF ?? ((x) => codeBlock('ts', x))
+      const _valueF = valueF ?? ((x) => x)
 
       // TODO: calculate actual size of embed (or use embed paginator)
       if (chunked.length > 5) {

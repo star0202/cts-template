@@ -1,10 +1,15 @@
 import { ownerOnly } from '../checks/owner'
 import { Emojis } from '../constants'
-import { Eval, Reload, Sync } from '../embeds/Dev'
+import { Eval, Notice, Reload, Sync } from '../embeds/Dev'
 import type CustomClient from '../structures/Client'
 import KnownError from '../structures/Error'
 import { toString } from '../utils/object'
-import { Extension, applicationCommand, listener } from '@pikokr/command.ts'
+import {
+  Extension,
+  applicationCommand,
+  listener,
+  option,
+} from '@pikokr/command.ts'
 import { blue, green, yellow } from 'chalk'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import {
@@ -14,10 +19,18 @@ import {
 } from 'discord.js'
 import type {
   CommandInteractionOption,
+  Guild,
   GuildBasedChannel,
+  GuildMember,
   Interaction,
   Message,
+  MessageCreateOptions,
 } from 'discord.js'
+
+export type NoticeResult = {
+  guild: Guild
+  owner: GuildMember
+}
 
 const commandLog = (data: CommandInteractionOption, indents = 0) =>
   `\n${' '.repeat(indents * 2)}- ${green(data.name)}: ${blue(
@@ -54,6 +67,30 @@ class Dev extends Extension<CustomClient> {
     )}) in ${guild}: ${yellow.bold(`/${i.commandName}`)}${options}`
 
     this.logger.info(msg)
+  }
+
+  @listener({
+    event: 'messageCreate',
+  })
+  async dmForwarder(msg: Message) {
+    if (!msg.channel.isDMBased()) return
+
+    if (msg.author.bot) return
+
+    if (await this.commandClient.isOwner(msg.author)) return
+
+    const { content: _content, attachments } = msg
+    const files = attachments.map((x) => x.url)
+    const content = `From: **${msg.author.tag}**(${msg.author.id})\n\n${_content}`
+
+    for (const owner of this.commandClient.owners) {
+      const user = await this.client.users.fetch(owner)
+
+      await user.send({
+        files,
+        content,
+      })
+    }
   }
 
   @ownerOnly
@@ -140,6 +177,72 @@ class Dev extends Extension<CustomClient> {
             .setURL(msg.url)
         ),
       ],
+    })
+  }
+
+  @ownerOnly
+  @applicationCommand({
+    name: 'notice',
+    type: ApplicationCommandType.ChatInput,
+    description: "[OWNER] Send a notice to all guild's owner",
+  })
+  async notice(
+    i: ChatInputCommandInteraction,
+    @option({
+      name: 'url',
+      description: 'discohook URL',
+      type: ApplicationCommandOptionType.String,
+      required: true,
+    })
+    msgURL: string
+  ) {
+    await i.deferReply({
+      ephemeral: true,
+    })
+
+    let payload: MessageCreateOptions
+    try {
+      const payloads = JSON.parse(
+        Buffer.from(
+          new URL(msgURL).searchParams.get('data')!,
+          'base64'
+        ).toString()
+      ).messages.map((msg: { data: MessageCreateOptions }) => msg.data)
+
+      if (payloads.length > 1)
+        return i.editReply({
+          embeds: [Notice.tooMany()],
+        })
+
+      payload = payloads[0]
+    } catch (e) {
+      return i.editReply({
+        embeds: [Notice.invalidURL()],
+      })
+    }
+
+    const success: NoticeResult[] = [],
+      fail: NoticeResult[] = []
+
+    await Promise.all(
+      this.client.guilds.cache.map(async (guild) => {
+        const owner = await guild.fetchOwner()
+
+        try {
+          await owner.send({
+            ...payload,
+            content: `**From**: **${i.user.globalName} (Dev)**\n**To**: owner of **${guild.name}**\n\n${payload.content}`,
+          })
+
+          success.push({ guild, owner })
+        } catch {
+          fail.push({ guild, owner })
+        }
+      })
+    )
+
+    i.editReply({
+      embeds: [Notice.result(success, fail)],
     })
   }
 }

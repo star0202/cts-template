@@ -1,6 +1,6 @@
 import { config } from './config'
 import CustomClient from './structures/Client'
-import { GatewayIntentBits } from 'discord.js'
+import { GatewayIntentBits, Partials } from 'discord.js'
 import { Logger } from 'tslog'
 
 const logger = new Logger({
@@ -18,7 +18,9 @@ const client = new CustomClient({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
   ],
+  partials: [Partials.Channel],
 })
 
 client.start()
