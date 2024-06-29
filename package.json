@@ -20,7 +20,6 @@
     "@types/node": "^20.12.12",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.4",
-    "prettier": "^2.8.8",
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
