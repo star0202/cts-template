@@ -1,49 +1,49 @@
+import { basename } from 'node:path'
+import { codeBlock } from 'discord.js'
 import { Emojis } from '../constants'
 import type { NoticeResult } from '../modules/Dev'
 import CustomEmbed from '../structures/Embed'
-import { codeBlock } from 'discord.js'
-import { basename } from 'node:path'
 
-export class Eval {
-  private static default = (code: string) =>
+export const Eval = {
+  default: (code: string) =>
     new CustomEmbed().addChunkedFields({
       name: 'Input',
       value: code,
       valueF: (x) => codeBlock('ts', x),
-    })
+    }),
 
-  static success = (code: string, output: string) =>
-    this.default(code)
+  success: (code: string, output: string) =>
+    Eval.default(code)
       .setTitle('Successfully executed')
       .setColor('Green')
       .addChunkedFields({
         name: 'Output',
         value: output,
         valueF: (x) => codeBlock('ts', x),
-      })
+      }),
 
-  static error = (code: string, e: Error) =>
-    this.default(code)
+  error: (code: string, e: Error) =>
+    Eval.default(code)
       .setTitle('Error occurred')
       .setColor('Red')
       .addChunkedFields({
         name: 'Stack trace',
         value: e.stack ?? 'N/A',
         valueF: (x) => codeBlock('ts', x),
-      })
+      }),
 }
 
-export class Reload {
-  static result = (
+export const Reload = {
+  result: (
     modules: {
       file: string
       result: boolean
       error?: Error | undefined
       extensions?: object[] | undefined
-    }[]
+    }[],
   ) => {
-    const success = modules.filter((x) => x.result),
-      fail = modules.filter((x) => !x.result)
+    const success = modules.filter((x) => x.result)
+    const fail = modules.filter((x) => !x.result)
 
     const { Success, Fail } = Emojis
 
@@ -58,36 +58,36 @@ export class Reload {
         {
           name: 'Fail',
           value: fail.map((x) => basename(x.file)).join('\n') || '*None*',
-        }
+        },
       )
-  }
+  },
 }
 
-export class Sync {
-  static success = () =>
+export const Sync = {
+  success: () =>
     new CustomEmbed()
       .setTitle('Commands synced')
-      .setDescription(`${Emojis.Success} Done`)
+      .setDescription(`${Emojis.Success} Done`),
 }
 
-export class Notice {
-  static invalidURL = () =>
+export const Notice = {
+  invalidURL: () =>
     new CustomEmbed()
       .setTitle('Invalid URL')
       .setColor('Red')
-      .setDescription('Invalid discohook URL')
+      .setDescription('Invalid discohook URL'),
 
-  static tooMany = () =>
+  tooMany: () =>
     new CustomEmbed()
       .setTitle('Too many messages')
       .setColor('Red')
-      .setDescription('You can only send 1 message at a time')
+      .setDescription('You can only send 1 message at a time'),
 
-  static result = (success: NoticeResult[], fail: NoticeResult[]) =>
+  result: (success: NoticeResult[], fail: NoticeResult[]) =>
     new CustomEmbed()
       .setTitle('Notice result')
       .setDescription(
-        `${Emojis.Success} ${success.length} ${Emojis.Fail} ${fail.length}`
+        `${Emojis.Success} ${success.length} ${Emojis.Fail} ${fail.length}`,
       )
       .addChunkedFields(
         {
@@ -96,7 +96,7 @@ export class Notice {
             success
               .map(
                 (x) =>
-                  `**${x.owner.user.tag}**(${x.owner.id}) of **${x.guild.name}**(${x.guild.id})`
+                  `**${x.owner.user.tag}**(${x.owner.id}) of **${x.guild.name}**(${x.guild.id})`,
               )
               .join('\n') || '*None*',
         },
@@ -106,9 +106,9 @@ export class Notice {
             fail
               .map(
                 (x) =>
-                  `**${x.owner.user.tag}**(${x.owner.id}) of **${x.guild.name}**(${x.guild.id})`
+                  `**${x.owner.user.tag}**(${x.owner.id}) of **${x.guild.name}**(${x.guild.id})`,
               )
               .join('\n') || '*None*',
-        }
-      )
+        },
+      ),
 }

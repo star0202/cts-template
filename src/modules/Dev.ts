@@ -1,9 +1,3 @@
-import { ownerOnly } from '../checks/owner'
-import { Emojis } from '../constants'
-import { Eval, Notice, Reload, Sync } from '../embeds/Dev'
-import type CustomClient from '../structures/Client'
-import KnownError from '../structures/Error'
-import { toString } from '../utils/object'
 import {
   Extension,
   applicationCommand,
@@ -15,7 +9,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  ChatInputCommandInteraction,
+  type ChatInputCommandInteraction,
 } from 'discord.js'
 import type {
   CommandInteractionOption,
@@ -26,6 +20,12 @@ import type {
   Message,
   MessageCreateOptions,
 } from 'discord.js'
+import { ownerOnly } from '../checks/owner'
+import { Emojis } from '../constants'
+import { Eval, Notice, Reload, Sync } from '../embeds/Dev'
+import type CustomClient from '../structures/Client'
+import KnownError from '../structures/Error'
+import { inspect } from '../utils/object'
 
 export type NoticeResult = {
   guild: Guild
@@ -34,7 +34,7 @@ export type NoticeResult = {
 
 const commandLog = (data: CommandInteractionOption, indents = 0) =>
   `\n${' '.repeat(indents * 2)}- ${green(data.name)}: ${blue(
-    data.value
+    data.value,
   )} (${yellow(ApplicationCommandOptionType[data.type])})`
 
 class Dev extends Extension<CustomClient> {
@@ -52,18 +52,17 @@ class Dev extends Extension<CustomClient> {
     const options = i.options.data.map((data) =>
       data.type !== ApplicationCommandOptionType.Subcommand
         ? commandLog(data)
-        : `\n- ${green(data.name)}: (${yellow('Subcommand')})` +
-          data.options?.map((x) => commandLog(x, 1))
+        : `\n- ${green(data.name)}: (${yellow('Subcommand')})${data.options?.map((x) => commandLog(x, 1))}`,
     )
 
     const guild = i.guild
       ? `${green(`#${(i.channel as GuildBasedChannel).name}`)}(${blue(
-          i.channelId
+          i.channelId,
         )}) at ${green(i.guild.name)}(${blue(i.guild.id)})`
       : 'DM'
 
     const msg = `${green(i.user.tag)}(${blue(
-      i.user.id
+      i.user.id,
     )}) in ${guild}: ${yellow.bold(`/${i.commandName}`)}${options}`
 
     this.logger.info(msg)
@@ -142,7 +141,8 @@ class Dev extends Extension<CustomClient> {
       .replace(/```(js|ts)?/g, '')
       .trim()
 
-    let res
+    // biome-ignore lint/suspicious/noExplicitAny: return type of eval() is any
+    let res: any
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { cts, client } = {
@@ -150,6 +150,7 @@ class Dev extends Extension<CustomClient> {
         client: this.client,
       }
 
+      // biome-ignore lint/security/noGlobalEval: eval is used for debugging
       res = await eval(code)
     } catch (e) {
       await msg.react(Emojis.Fail)
@@ -165,7 +166,7 @@ class Dev extends Extension<CustomClient> {
     }
 
     await msg.react(Emojis.Success)
-    const output = typeof res === 'string' ? res : toString(res)
+    const output = typeof res === 'string' ? res : inspect(res)
     msg.reply({
       embeds: [Eval.success(code, output)],
       allowedMentions: { repliedUser: false },
@@ -174,7 +175,7 @@ class Dev extends Extension<CustomClient> {
           new ButtonBuilder()
             .setStyle(ButtonStyle.Link)
             .setLabel('Jump to message')
-            .setURL(msg.url)
+            .setURL(msg.url),
         ),
       ],
     })
@@ -194,7 +195,7 @@ class Dev extends Extension<CustomClient> {
       type: ApplicationCommandOptionType.String,
       required: true,
     })
-    msgURL: string
+    msgURL: string,
   ) {
     await i.deferReply({
       ephemeral: true,
@@ -204,9 +205,10 @@ class Dev extends Extension<CustomClient> {
     try {
       const payloads = JSON.parse(
         Buffer.from(
+          // biome-ignore lint/style/noNonNullAssertion: param data is always exist
           new URL(msgURL).searchParams.get('data')!,
-          'base64'
-        ).toString()
+          'base64',
+        ).toString(),
       ).messages.map((msg: { data: MessageCreateOptions }) => msg.data)
 
       if (payloads.length > 1)
@@ -221,8 +223,8 @@ class Dev extends Extension<CustomClient> {
       })
     }
 
-    const success: NoticeResult[] = [],
-      fail: NoticeResult[] = []
+    const success: NoticeResult[] = []
+    const fail: NoticeResult[] = []
 
     await Promise.all(
       this.client.guilds.cache.map(async (guild) => {
@@ -238,7 +240,7 @@ class Dev extends Extension<CustomClient> {
         } catch {
           fail.push({ guild, owner })
         }
-      })
+      }),
     )
 
     i.editReply({

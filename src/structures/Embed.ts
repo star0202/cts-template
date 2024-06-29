@@ -1,5 +1,3 @@
-import { Colors } from '../constants'
-import { toTimestamp } from '../utils/time'
 import { EmbedBuilder, GuildMember, normalizeArray } from 'discord.js'
 import type {
   APIEmbed,
@@ -8,6 +6,8 @@ import type {
   RestOrArray,
   User,
 } from 'discord.js'
+import { Colors } from '../constants'
+import { toTimestamp } from '../utils/time'
 
 const chunk = (content: string, limit = 1024 - 10) => {
   const chunked = []
@@ -63,7 +63,7 @@ export default class CustomEmbed extends EmbedBuilder {
       }
     >
   ) {
-    normalizeArray(fields).forEach((field) => {
+    for (const field of normalizeArray(fields)) {
       const { name, value, inline, nameF, valueF } = field
       let chunked = chunk(value)
       const originalLength = chunked.length
@@ -88,9 +88,9 @@ export default class CustomEmbed extends EmbedBuilder {
           name: _nameF(name, idx, originalLength),
           value: _valueF(v),
           inline,
-        }))
+        })),
       )
-    })
+    }
 
     return this
   }

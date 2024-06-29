@@ -7,22 +7,17 @@
     "build": "rimraf dist && tsc",
     "dev": "ts-node --swc src",
     "start": "node dist/index.js",
-    "lint": "eslint src --ignore-path .gitignore",
+    "lint": "biome check",
     "format": "prettier -w .",
     "prepare": "husky"
   },
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
     "@swc/core": "^1.5.7",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/git-rev-sync": "^2.0.2",
     "@types/node": "^20.12.12",
-    "@typescript-eslint/eslint-plugin": "^7.10.0",
-    "@typescript-eslint/parser": "^7.10.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.4",
     "prettier": "^2.8.8",
@@ -39,13 +34,7 @@
     "zod": "^3.23.8"
   },
   "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,yml}": [
-      "prettier --write"
-    ]
+    "*": ["biome check --write"]
   },
   "packageManager": "pnpm@9.1.2"
 }

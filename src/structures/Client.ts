@@ -1,12 +1,12 @@
-import { config } from '../config'
-import { VERSION } from '../constants'
+import { join } from 'node:path'
 import { CommandClient } from '@pikokr/command.ts'
 import { green } from 'chalk'
 import { ActivityType, Client, Events } from 'discord.js'
 import type { GatewayIntentBits, Partials } from 'discord.js'
 import { short } from 'git-rev-sync'
-import { join } from 'node:path'
-import { Logger } from 'tslog'
+import type { Logger } from 'tslog'
+import { config } from '../config'
+import { VERSION } from '../constants'
 
 export default class CustomClient extends CommandClient {
   constructor(config: {
@@ -21,7 +21,7 @@ export default class CustomClient extends CommandClient {
         intents,
         partials,
       }),
-      logger
+      logger,
     )
 
     this.discord.once(Events.ClientReady, (client) => this.onReady(client))
@@ -33,7 +33,7 @@ export default class CustomClient extends CommandClient {
     await this.enableApplicationCommandsExtension({ guilds: config.guilds })
 
     await this.registry.loadAllModulesInDirectory(
-      join(__dirname, '..', 'modules')
+      join(__dirname, '..', 'modules'),
     )
   }
 

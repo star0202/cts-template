@@ -8,6 +8,7 @@ const Config = z.object({
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const configRaw = require('../config.json')
-if (configRaw.guilds && configRaw.guilds.length === 0) delete configRaw.guilds
+if (configRaw.guilds && configRaw.guilds.length === 0)
+  configRaw.guilds = undefined
 
 export const config = Config.parse(configRaw)

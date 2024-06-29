@@ -1,7 +1,7 @@
-import { config } from './config'
-import CustomClient from './structures/Client'
 import { GatewayIntentBits, Partials } from 'discord.js'
 import { Logger } from 'tslog'
+import { config } from './config'
+import CustomClient from './structures/Client'
 
 const logger = new Logger({
   name: 'Main',

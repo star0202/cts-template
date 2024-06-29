@@ -1,6 +1,6 @@
-import { inspect } from 'node:util'
+import { inspect as nodeInspect } from 'node:util'
 
-export const toString = <T>(obj: T, ignore?: (keyof T)[]): string => {
+export const inspect = <T>(obj: T, ignore?: (keyof T)[]): string => {
   let cur = obj
   if (ignore) {
     try {
@@ -9,10 +9,10 @@ export const toString = <T>(obj: T, ignore?: (keyof T)[]): string => {
       console.error(e)
     }
 
-    ignore.forEach((key) => delete cur[key])
+    for (const key of ignore) delete cur[key]
   }
 
-  return inspect(cur, {
+  return nodeInspect(cur, {
     maxArrayLength: 200,
     depth: 2,
   })
