@@ -9,7 +9,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  type ChatInputCommandInteraction,
+  ChatInputCommandInteraction,
 } from 'discord.js'
 import type {
   CommandInteractionOption,
