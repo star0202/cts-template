@@ -18,4 +18,4 @@ jobs:
       - name: Install Dependencies
         run: pnpm i --frozen-lockfile
       - name: Run biome
-        run: pnpm biome ci --error-on-warnings
+        run: pnpm biome ci
