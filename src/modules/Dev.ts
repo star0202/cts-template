@@ -144,7 +144,6 @@ class Dev extends Extension<CustomClient> {
     // biome-ignore lint/suspicious/noExplicitAny: return type of eval() is any
     let res: any
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { cts, client } = {
         cts: this.commandClient,
         client: this.client,
