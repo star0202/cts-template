@@ -30,7 +30,9 @@ export default class CustomClient extends CommandClient {
   }
 
   async setup() {
-    await this.enableApplicationCommandsExtension({ guilds: config.guilds })
+    await this.enableApplicationCommandsExtension({
+      guilds: config.guilds.length > 0 ? config.guilds : undefined,
+    })
 
     await this.registry.loadAllModulesInDirectory(
       join(__dirname, '..', 'modules'),
