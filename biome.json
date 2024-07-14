@@ -6,10 +6,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "style": {
-        "useImportType": "warn"
-      }
+      "recommended": true
     }
   },
   "formatter": {

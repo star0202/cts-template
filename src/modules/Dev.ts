@@ -9,7 +9,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  ChatInputCommandInteraction,
+  ChatInputCommandInteraction, // biome-ignore lint/style/useImportType: command.ts bug
 } from 'discord.js'
 import type {
   CommandInteractionOption,
