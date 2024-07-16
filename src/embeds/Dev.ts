@@ -3,6 +3,8 @@ import { codeBlock } from 'discord.js'
 import { Emojis } from '../constants'
 import type { NoticeResult } from '../modules/Dev'
 import CustomEmbed from '../structures/Embed'
+import { toTimestamp } from '../utils/time'
+import { formatMemory } from '../utils/memory'
 
 export const Eval = {
   default: (code: string) =>
@@ -111,4 +113,26 @@ export const Notice = {
               .join('\n') || '*None*',
         },
       ),
+}
+
+export const Info = {
+  default: (startedAt: number, latency: number, process: NodeJS.Process) =>
+    new CustomEmbed().setTitle('Bot info').addFields(
+      {
+        name: 'Started at',
+        value: `<t:${toTimestamp(startedAt)}:R>`,
+      },
+      {
+        name: 'Latency',
+        value: `${latency}ms`,
+      },
+      {
+        name: 'Process info',
+        value: `${process.release.name} ${process.version} on ${process.platform}(${process.arch}), PID ${process.pid}`,
+      },
+      {
+        name: 'Memory usage',
+        value: formatMemory(process.memoryUsage()),
+      },
+    ),
 }

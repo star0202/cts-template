@@ -9,6 +9,8 @@ import { config } from '../config'
 import { VERSION } from '../constants'
 
 export default class CustomClient extends CommandClient {
+  readonly startedAt = Date.now()
+
   constructor(config: {
     logger: Logger<unknown>
     intents: GatewayIntentBits[]

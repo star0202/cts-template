@@ -22,10 +22,11 @@ import type {
 } from 'discord.js'
 import { ownerOnly } from '../checks/owner'
 import { Emojis } from '../constants'
-import { Eval, Notice, Reload, Sync } from '../embeds/Dev'
+import { Eval, Notice, Info, Reload, Sync } from '../embeds/Dev'
 import type CustomClient from '../structures/Client'
 import KnownError from '../structures/Error'
 import { inspect } from '../utils/object'
+import { formatMemory } from '../utils/memory'
 
 export type NoticeResult = {
   guild: Guild
@@ -244,6 +245,24 @@ class Dev extends Extension<CustomClient> {
 
     i.editReply({
       embeds: [Notice.result(success, fail)],
+    })
+  }
+
+  @ownerOnly
+  @applicationCommand({
+    name: 'info',
+    type: ApplicationCommandType.ChatInput,
+    description: '[OWNER] Get bot info including latency',
+  })
+  async info(i: ChatInputCommandInteraction) {
+    await i.deferReply({
+      ephemeral: true,
+    })
+
+    const latency = Date.now() - i.createdTimestamp
+
+    i.editReply({
+      embeds: [Info.default(this.commandClient.startedAt, latency, process)],
     })
   }
 }
