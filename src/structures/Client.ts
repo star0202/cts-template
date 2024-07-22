@@ -22,11 +22,21 @@ export default class CustomClient extends CommandClient {
       new Client({
         intents,
         partials,
+        presence: {
+          activities: [
+            {
+              name: `${VERSION} (${short() ?? 'N/A'})`,
+              type: ActivityType.Playing,
+            },
+          ],
+        },
       }),
       logger,
     )
 
-    this.discord.once(Events.ClientReady, (client) => this.onReady(client))
+    this.discord.once(Events.ClientReady, (client) =>
+      this.onClientReady(client),
+    )
 
     this.discord.on(Events.Debug, (msg) => this.logger.debug(msg))
   }
@@ -41,16 +51,7 @@ export default class CustomClient extends CommandClient {
     )
   }
 
-  async onReady(client: Client<true>) {
-    client.user.setPresence({
-      activities: [
-        {
-          name: `${VERSION} (${short() ?? 'N/A'})`,
-          type: ActivityType.Playing,
-        },
-      ],
-    })
-
+  async onClientReady(client: Client<true>) {
     this.logger.info(`Logged in as: ${green(client.user.tag)}`)
 
     await this.fetchOwners()

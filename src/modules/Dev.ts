@@ -22,11 +22,11 @@ import type {
 } from 'discord.js'
 import { ownerOnly } from '../checks/owner'
 import { Emojis } from '../constants'
-import { Eval, Notice, Info, Reload, Sync } from '../embeds/Dev'
+import { Eval, Info, Notice, Reload, Sync } from '../embeds/Dev'
 import type CustomClient from '../structures/Client'
 import KnownError from '../structures/Error'
-import { inspect } from '../utils/object'
 import { formatMemory } from '../utils/memory'
+import { inspect } from '../utils/object'
 
 export type NoticeResult = {
   guild: Guild
