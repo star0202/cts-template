@@ -9,7 +9,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  ChatInputCommandInteraction, // biome-ignore lint/style/useImportType: command.ts bug
+  ChatInputCommandInteraction,
 } from 'discord.js'
 import type {
   CommandInteractionOption,
@@ -25,7 +25,6 @@ import { Emojis } from '../constants'
 import { Eval, Info, Notice, Reload, Sync } from '../embeds/Dev'
 import type CustomClient from '../structures/Client'
 import KnownError from '../structures/Error'
-import { formatMemory } from '../utils/memory'
 import { inspect } from '../utils/object'
 
 export type NoticeResult = {

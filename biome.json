@@ -6,7 +6,14 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "useImportType": {
+          "level": "warn",
+          "fix": "none"
+        },
+        "noNonNullAssertion": "warn"
+      }
     }
   },
   "formatter": {
