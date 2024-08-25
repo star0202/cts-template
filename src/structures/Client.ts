@@ -3,7 +3,7 @@ import { CommandClient } from '@pikokr/command.ts'
 import { green } from 'chalk'
 import { ActivityType, Client, Events } from 'discord.js'
 import type { GatewayIntentBits, Partials } from 'discord.js'
-import { short } from 'git-rev-sync'
+import { getHeadRevision } from '../utils/git'
 import type { Logger } from 'tslog'
 import { config } from '../config'
 import { VERSION } from '../constants'
@@ -25,7 +25,7 @@ export default class CustomClient extends CommandClient {
         presence: {
           activities: [
             {
-              name: `${VERSION} (${short() ?? 'N/A'})`,
+              name: `${VERSION} (${getHeadRevision().slice(0, 7) ?? 'N/A'})`,
               type: ActivityType.Playing,
             },
           ],
