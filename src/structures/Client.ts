@@ -3,10 +3,10 @@ import { CommandClient } from '@pikokr/command.ts'
 import { green } from 'chalk'
 import { ActivityType, Client, Events } from 'discord.js'
 import type { GatewayIntentBits, Partials } from 'discord.js'
-import { getHeadRevision } from '../utils/git'
 import type { Logger } from 'tslog'
 import { config } from '../config'
 import { VERSION } from '../constants'
+import { getHeadRevision } from '../utils/git'
 
 export default class CustomClient extends CommandClient {
   readonly startedAt = Date.now()
