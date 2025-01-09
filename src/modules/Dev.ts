@@ -258,7 +258,7 @@ class Dev extends Extension<CustomClient> {
       ephemeral: true,
     })
 
-    const latency = Date.now() - i.createdTimestamp
+    const latency = this.commandClient.discord.ws.ping
 
     i.editReply({
       embeds: [Info.default(this.commandClient.startedAt, latency, process)],
