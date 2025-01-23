@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@pikokr/command.ts':
         specifier: ^5.8.0
-        version: 5.8.0(discord.js@14.15.3)(tslog@4.9.2)
+        version: 5.8.0(discord.js@14.15.3)(tslog@4.9.3)
       chalk:
         specifier: 4.1.2
         version: 4.1.2
@@ -19,7 +19,7 @@ importers:
         version: 14.15.3
       tslog:
         specifier: ^4.9.2
-        version: 4.9.2
+        version: 4.9.3
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -473,8 +473,8 @@ packages:
   tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
-  tslog@4.9.2:
-    resolution: {integrity: sha512-wBM+LRJoNl34Bdu8mYEFxpvmOUedpNUwMNQB/NcuPIZKwdDde6xLHUev3bBjXQU7gdurX++X/YE7gLH8eXYsiQ==}
+  tslog@4.9.3:
+    resolution: {integrity: sha512-oDWuGVONxhVEBtschLf2cs/Jy8i7h1T+CpdkTNWQgdAF7DhRo2G8vMCgILKe7ojdEkLhICWgI1LYSSKaJsRgcw==}
     engines: {node: '>=16'}
 
   typescript@5.4.5:
@@ -634,14 +634,14 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@pikokr/command.ts@5.8.0(discord.js@14.15.3)(tslog@4.9.2)':
+  '@pikokr/command.ts@5.8.0(discord.js@14.15.3)(tslog@4.9.3)':
     dependencies:
       '@types/node': 20.12.12
       chalk: 4.1.2
       discord.js: 14.15.3
       lodash: 4.17.21
       reflect-metadata: 0.2.2
-      tslog: 4.9.2
+      tslog: 4.9.3
       walk-sync: 3.0.0
 
   '@pkgjs/parseargs@0.11.0':
@@ -927,7 +927,7 @@ snapshots:
 
   tslib@2.6.2: {}
 
-  tslog@4.9.2: {}
+  tslog@4.9.3: {}
 
   typescript@5.4.5: {}
 
